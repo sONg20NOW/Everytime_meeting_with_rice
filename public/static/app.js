@@ -147,7 +147,10 @@ async function uploadTimetable() {
         });
 
         if (response.data.success) {
-            alert('시간표가 성공적으로 분석되고 저장되었습니다!');
+            const message = response.data.message || '시간표가 성공적으로 분석되고 저장되었습니다!';
+            const courseCount = response.data.courses ? response.data.courses.length : 0;
+            alert(`${message}\n분석된 수업 개수: ${courseCount}개`);
+            
             loadUserTimetables();
             
             // 업로드 영역 초기화
@@ -155,13 +158,21 @@ async function uploadTimetable() {
             document.getElementById('image-preview').classList.add('hidden');
             document.getElementById('upload-area').classList.remove('hidden');
         } else {
-            alert('시간표 분석에 실패했습니다.');
+            alert('시간표 분석에 실패했습니다: ' + (response.data.error || '알 수 없는 오류'));
         }
 
         hideLoading();
     } catch (error) {
         console.error('Upload error:', error);
-        alert('시간표 업로드 중 오류가 발생했습니다.');
+        let errorMessage = '시간표 업로드 중 오류가 발생했습니다.';
+        
+        if (error.response && error.response.data && error.response.data.error) {
+            errorMessage += '\n상세 오류: ' + error.response.data.error;
+        } else if (error.message) {
+            errorMessage += '\n상세 오류: ' + error.message;
+        }
+        
+        alert(errorMessage);
         hideLoading();
     }
 }
