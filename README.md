@@ -1,21 +1,117 @@
-```txt
-npm install
-npm run dev
-```
+# MealMate - 시간표 기반 밥약 매칭 서비스
 
-```txt
-npm run deploy
-```
+## 프로젝트 개요
+- **이름**: MealMate
+- **목표**: 에브리타임 시간표 이미지를 분석하여 같은 시간대에 여유가 있는 학생들을 매칭해주는 밥약 서비스
+- **주요 기능**: 
+  - AI 기반 시간표 이미지 분석
+  - 스마트 매칭 알고리즘
+  - 실시간 밥약 요청 및 매칭
+  - 사용자 프로필 및 선호도 관리
 
-[For generating/synchronizing types based on your Worker configuration run](https://developers.cloudflare.com/workers/wrangler/commands/#types):
+## 서비스 URL
+- **개발 서버**: https://3000-ikpe9gkmemj2sziznkgrk-6532622b.e2b.dev
+- **GitHub**: (배포 시 추가됨)
 
-```txt
-npm run cf-typegen
-```
+## 데이터 아키텍처
 
-Pass the `CloudflareBindings` as generics when instantiation `Hono`:
+### 주요 데이터 모델
+1. **Users**: 사용자 정보 (이름, 이메일, 전화번호, 대학교)
+2. **Timetables**: 시간표 정보 (학기, 이미지 URL)
+3. **Courses**: 수업 정보 (과목명, 교수, 요일, 시간, 장소)
+4. **Match_requests**: 밥약 매칭 요청
+5. **Matches**: 매칭된 밥약 정보
+6. **Meal_preferences**: 식사 선호도
 
-```ts
-// src/index.ts
-const app = new Hono<{ Bindings: CloudflareBindings }>()
-```
+### 스토리지 서비스
+- **Cloudflare D1**: 관계형 데이터베이스 (사용자, 시간표, 매칭 데이터)
+- **Cloudflare R2**: 이미지 스토리지 (시간표 이미지)
+- **Cloudflare AI**: 시간표 이미지 분석 (LLaVA 모델)
+
+### 데이터 흐름
+1. 사용자가 시간표 이미지 업로드
+2. R2에 이미지 저장 → AI 모델로 시간표 분석
+3. 분석된 수업 정보를 D1 데이터베이스에 저장
+4. 매칭 요청 시 시간 충돌 알고리즘 실행
+5. 적합한 매칭 상대 찾아서 결과 반환
+
+## 현재 완료된 기능
+
+### ✅ 핵심 기능
+- **사용자 등록/로그인**: 이메일 기반 간편 가입
+- **시간표 이미지 업로드**: 드래그 앤 드롭 지원
+- **AI 시간표 분석**: Cloudflare AI (LLaVA) 모델 활용
+- **수업 정보 저장**: 분석된 데이터를 구조화하여 저장
+- **매칭 요청 생성**: 날짜, 시간, 장소 선호도 설정
+- **스마트 매칭 알고리즘**: 시간 충돌 검사 및 최적 매칭
+- **매칭 결과 표시**: 실시간 매칭 상태 및 연락처 정보
+
+### ✅ API 엔드포인트
+- `POST /api/users` - 사용자 등록/로그인
+- `POST /api/timetables/analyze` - 시간표 이미지 분석
+- `GET /api/users/:userId/timetables` - 사용자 시간표 조회
+- `POST /api/match-requests` - 매칭 요청 생성
+- `GET /api/users/:userId/matches` - 매칭 결과 조회
+- `PATCH /api/matches/:matchId` - 매칭 상태 업데이트
+
+### ✅ 사용자 인터페이스
+- **반응형 웹 디자인**: 모바일/데스크톱 최적화
+- **직관적인 UI**: TailwindCSS 기반 모던 디자인
+- **실시간 업데이트**: JavaScript 기반 동적 콘텐츠
+- **이미지 미리보기**: 업로드 전 시간표 확인
+- **매칭 상태 관리**: 확정/취소 기능
+
+## 사용자 가이드
+
+### 1. 회원가입/로그인
+- 이메일, 이름, 대학교 정보 입력 (전화번호는 선택사항)
+- 간단한 정보만으로 즉시 서비스 이용 가능
+
+### 2. 시간표 등록
+- 에브리타임에서 시간표 스크린샷 촬영
+- '시간표 등록' 섹션에서 이미지 업로드
+- AI가 자동으로 수업 정보 분석 및 저장
+
+### 3. 밥약 요청
+- 원하는 식사 종류(점심/저녁) 선택
+- 희망 날짜와 시간대 설정
+- 선호 장소와 메시지 입력 후 요청
+
+### 4. 매칭 결과 확인
+- 자동으로 매칭된 상대방 정보 확인
+- 연락처 정보로 직접 연락
+- 매칭 확정 또는 취소 선택
+
+## 기술 스택
+- **Backend**: Hono Framework + TypeScript
+- **Frontend**: Vanilla JavaScript + TailwindCSS
+- **Database**: Cloudflare D1 (SQLite)
+- **Storage**: Cloudflare R2
+- **AI**: Cloudflare AI (LLaVA-1.5-7B)
+- **Deployment**: Cloudflare Pages
+
+## 배포 상태
+- **현재 상태**: ✅ 개발 서버 활성화
+- **플랫폼**: Cloudflare Pages (준비됨)
+- **데이터베이스**: D1 로컬 개발 환경 설정 완료
+- **최종 업데이트**: 2024년 9월 22일
+
+## 다음 개발 단계
+
+### 🔄 개선 예정 기능
+1. **시간표 분석 정확도 향상**: OCR 및 AI 모델 개선
+2. **매칭 알고리즘 고도화**: 선호도 기반 스코어링
+3. **실시간 알림**: 새로운 매칭 시 푸시 알림
+4. **그룹 밥약**: 2명 이상 다중 매칭 지원
+5. **리뷰 시스템**: 밥약 후 평가 및 피드백
+
+### 🚀 확장 계획
+- 다중 대학교 지원
+- 모바일 앱 개발
+- 식당 연동 및 예약 기능
+- 소셜 기능 (친구 추가, 그룹 등)
+
+## 개발자 정보
+- **개발 기간**: 2024년 9월 22일
+- **개발 도구**: Claude + Hono Framework
+- **코드 저장소**: Git 버전 관리 적용
