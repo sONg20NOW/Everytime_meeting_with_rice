@@ -1,19 +1,22 @@
 // User related types
 export interface User {
   id: number;
-  name: string;
+  name?: string;
   email: string;
   phone?: string;
-  university: string;
+  university?: string;
   created_at: string;
   updated_at: string;
 }
 
 export interface CreateUserRequest {
-  name: string;
   email: string;
-  phone?: string;
-  university: string;
+  password: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
 }
 
 // Course related types
@@ -145,9 +148,7 @@ export interface MatchState {
 // Form types
 export interface LoginFormData {
   email: string;
-  name: string;
-  phone: string;
-  university: string;
+  password: string;
 }
 
 export interface TimetableUploadFormData {

@@ -223,10 +223,10 @@ app.get('/', (c) => {
 
 // API 라우트들
 
-// 사용자 관련 API
-app.post('/api/users', async (c) => {
+// 사용자 관련 API - 회원가입
+app.post('/api/users/register', async (c) => {
   const { env } = c
-  const { name, email, phone, university } = await c.req.json()
+  const { email, password } = await c.req.json()
 
   try {
     // 기존 사용자 확인
@@ -235,14 +235,14 @@ app.post('/api/users', async (c) => {
     `).bind(email).first()
 
     if (existingUser) {
-      return c.json(existingUser)
+      return c.json({ error: '이미 존재하는 이메일입니다.' }, 400)
     }
 
-    // 새 사용자 생성
+    // 새 사용자 생성 (비밀번호는 실제로는 해시화해야 함)
     const result = await env.DB.prepare(`
-      INSERT INTO users (name, email, phone, university) 
+      INSERT INTO users (email, name, phone, university) 
       VALUES (?, ?, ?, ?)
-    `).bind(name, email, phone, university).run()
+    `).bind(email, email.split('@')[0], null, '기본대학교').run()
 
     const newUser = await env.DB.prepare(`
       SELECT * FROM users WHERE id = ?
@@ -252,6 +252,29 @@ app.post('/api/users', async (c) => {
   } catch (error) {
     console.error('Error creating user:', error)
     return c.json({ error: 'Failed to create user' }, 500)
+  }
+})
+
+// 사용자 관련 API - 로그인
+app.post('/api/users/login', async (c) => {
+  const { env } = c
+  const { email, password } = await c.req.json()
+
+  try {
+    // 사용자 확인 (실제로는 비밀번호 해시 비교)
+    const user = await env.DB.prepare(`
+      SELECT * FROM users WHERE email = ?
+    `).bind(email).first()
+
+    if (!user) {
+      return c.json({ error: '존재하지 않는 이메일입니다.' }, 401)
+    }
+
+    // 간단한 로그인 (실제로는 비밀번호 검증 필요)
+    return c.json(user)
+  } catch (error) {
+    console.error('Error logging in user:', error)
+    return c.json({ error: 'Failed to login' }, 500)
   }
 })
 

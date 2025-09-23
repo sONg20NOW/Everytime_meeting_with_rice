@@ -12,8 +12,8 @@ export const UserStatus: React.FC<UserStatusProps> = ({ user, onLogout }) => {
       <div className="flex items-center justify-center space-x-4">
         <div>
           <i className="fas fa-user-circle text-2xl text-indigo-600"></i>
-          <span className="ml-2 font-medium">{user.name}</span>
-          <span className="text-gray-500">({user.university})</span>
+          <span className="ml-2 font-medium">{user.email}</span>
+          {user.name && <span className="text-gray-500">({user.name})</span>}
         </div>
         <button
           onClick={onLogout}

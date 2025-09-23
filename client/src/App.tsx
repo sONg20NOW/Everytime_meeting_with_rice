@@ -15,6 +15,7 @@ const App: React.FC = () => {
     isLoading: authLoading,
     error: authError,
     login,
+    register,
     logout,
     clearError: clearAuthError,
     isAuthenticated
@@ -100,6 +101,7 @@ const App: React.FC = () => {
             /* 로그인/회원가입 섹션 */
             <AuthForm
               onLogin={login}
+              onRegister={register}
               isLoading={authLoading}
               error={authError}
             />

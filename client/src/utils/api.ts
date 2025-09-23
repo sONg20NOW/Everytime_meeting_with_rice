@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import type {
   User,
   CreateUserRequest,
+  LoginRequest,
   Timetable,
   TimetableAnalyzeResponse,
   CreateMatchRequest,
@@ -28,9 +29,15 @@ api.interceptors.response.use(
 
 // User API
 export const userAPI = {
-  // 사용자 생성/로그인
-  createUser: async (userData: CreateUserRequest): Promise<User> => {
-    const response: AxiosResponse<User> = await api.post('/users', userData);
+  // 사용자 회원가입
+  register: async (userData: CreateUserRequest): Promise<User> => {
+    const response: AxiosResponse<User> = await api.post('/users/register', userData);
+    return response.data;
+  },
+
+  // 사용자 로그인
+  login: async (loginData: LoginRequest): Promise<User> => {
+    const response: AxiosResponse<User> = await api.post('/users/login', loginData);
     return response.data;
   },
 };

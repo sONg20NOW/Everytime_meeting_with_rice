@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { User, CreateUserRequest, AuthState } from '../types';
+import type { User, CreateUserRequest, LoginRequest, AuthState } from '../types';
 import { userAPI, handleApiError } from '../utils/api';
 
 const STORAGE_KEY = 'currentUser';
@@ -25,12 +25,27 @@ export const useAuth = () => {
     }
   }, []);
 
-  // 로그인/회원가입
-  const login = async (userData: CreateUserRequest): Promise<void> => {
+  // 로그인
+  const login = async (loginData: LoginRequest): Promise<void> => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     
     try {
-      const user = await userAPI.createUser(userData);
+      const user = await userAPI.login(loginData);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+      setState(prev => ({ ...prev, user, isLoading: false }));
+    } catch (error) {
+      const errorMessage = handleApiError(error);
+      setState(prev => ({ ...prev, error: errorMessage, isLoading: false }));
+      throw error;
+    }
+  };
+
+  // 회원가입
+  const register = async (userData: CreateUserRequest): Promise<void> => {
+    setState(prev => ({ ...prev, isLoading: true, error: null }));
+    
+    try {
+      const user = await userAPI.register(userData);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
       setState(prev => ({ ...prev, user, isLoading: false }));
     } catch (error) {
@@ -54,6 +69,7 @@ export const useAuth = () => {
   return {
     ...state,
     login,
+    register,
     logout,
     clearError,
     isAuthenticated: !!state.user,
