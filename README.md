@@ -1,9 +1,9 @@
-# MealMate - React + TypeScript 시간표 기반 밥약 매칭 서비스
+# EveryRice - React + TypeScript 시간표 기반 밥약 매칭 서비스
 
 ## 프로젝트 개요
-- **이름**: MealMate
+- **이름**: EveryRice
 - **목표**: 에브리타임 시간표 이미지를 분석하여 같은 시간대에 여유가 있는 학생들을 매칭해주는 밥약 서비스
-- **프론트엔드**: React + TypeScript (완전 새로운 구현)
+- **프론트엔드**: React + TypeScript
 - **백엔드**: Hono Framework + Cloudflare Workers
 - **주요 기능**: 
   - AI 기반 시간표 이미지 분석
@@ -13,11 +13,10 @@
 
 ## 서비스 URL
 - **개발 서버**: https://3000-ikpe9gkmemj2sziznkgrk-6532622b.e2b.dev
-- **GitHub**: https://github.com/sONg20NOW/Everytime_meeting_with_rice
 
 ## 기술 스택
 
-### 🔥 **Frontend (New!)**
+### **Frontend**
 - **React 19** - 최신 React 기능 활용
 - **TypeScript** - 완전한 타입 안전성
 - **TailwindCSS** - 모던 반응형 디자인
@@ -25,12 +24,12 @@
 - **Axios** - HTTP 클라이언트
 - **Vite** - 빠른 개발 환경
 
-### 🚀 **Backend**
+### **Backend**
 - **Hono Framework** - 경량 웹 프레임워크
 - **TypeScript** - 서버사이드 타입 안전성
 - **Cloudflare Workers** - 엣지 컴퓨팅
 
-### 💾 **Database & Storage**
+### **Database & Storage**
 - **Cloudflare D1** - SQLite 기반 글로벌 DB
 - **Cloudflare R2** - 이미지 스토리지
 - **Cloudflare AI** - 시간표 분석 (LLaVA 모델)
@@ -55,7 +54,7 @@ webapp/
 
 ## React 컴포넌트 구조
 
-### 📱 **컴포넌트 아키텍처**
+### **컴포넌트 아키텍처**
 - **App.tsx** - 메인 애플리케이션 컨테이너
 - **AuthForm** - 로그인/회원가입 폼
 - **TimetableUpload** - 시간표 이미지 업로드
@@ -69,7 +68,7 @@ webapp/
 - **useTimetable** - 시간표 업로드/조회 로직
 - **useMatches** - 매칭 요청/관리 로직
 
-### 🎯 **TypeScript 타입 시스템**
+###  **TypeScript 타입 시스템**
 ```typescript
 interface User {
   id: number;
@@ -94,7 +93,7 @@ interface Match {
 
 ## 현재 완료된 기능
 
-### ✅ **React Frontend**
+### **React Frontend**
 - **컴포넌트 기반 아키텍처** - 재사용 가능한 모듈식 구조
 - **완전한 타입 안전성** - TypeScript로 모든 데이터 타입 정의
 - **반응형 디자인** - 모바일/데스크톱 완벽 지원
@@ -102,14 +101,14 @@ interface Match {
 - **실시간 UI 업데이트** - 사용자 액션에 즉각 반응
 - **로컬 스토리지 연동** - 사용자 세션 자동 복원
 
-### ✅ **핵심 기능**
+### **핵심 기능**
 - **사용자 인증** - 간편 로그인/회원가입
 - **시간표 분석** - AI 기반 이미지 분석 (로컬에서는 샘플 데이터)
 - **스마트 매칭** - 시간 충돌 검사 알고리즘
 - **실시간 매칭** - 즉시 매칭 결과 확인
 - **매칭 관리** - 확정/취소 기능
 
-### ✅ **API 엔드포인트**
+### **API 엔드포인트**
 - `POST /api/users` - 사용자 등록/로그인
 - `POST /api/timetables/analyze` - 시간표 이미지 분석
 - `GET /api/users/:userId/timetables` - 사용자 시간표 조회
@@ -140,7 +139,7 @@ interface Match {
 
 ## 개발 환경 설정
 
-### 🛠️ **로컬 개발**
+### **로컬 개발**
 ```bash
 # 의존성 설치
 npm install
@@ -163,42 +162,9 @@ npm run build
 npm run deploy
 ```
 
-## 성능 최적화
-
-### ⚡ **Frontend 최적화**
-- **코드 스플리팅** - Vite 기반 자동 번들 최적화
-- **TreeShaking** - 미사용 코드 자동 제거
-- **CSS 최적화** - TailwindCSS 퍼지 기능
-- **타입 체크** - 런타임 오류 사전 방지
-
-### 🔧 **Backend 최적화**
-- **엣지 컴퓨팅** - Cloudflare Workers 글로벌 배포
-- **데이터베이스** - D1 SQLite 최적화된 쿼리
-- **이미지 저장** - R2 스토리지 CDN 활용
-
 ## 배포 상태
 - **현재 상태**: ✅ React + TypeScript 개발 서버 활성화
 - **플랫폼**: Cloudflare Pages (준비됨)
 - **프론트엔드**: React 19 + TypeScript
 - **백엔드**: Hono + Cloudflare Workers
 - **최종 업데이트**: 2024년 9월 22일
-
-## 다음 개발 단계
-
-### 🔄 **UI/UX 개선**
-1. **애니메이션** - Framer Motion 도입
-2. **다크모드** - 테마 시스템 구축
-3. **PWA** - 모바일 앱화
-4. **성능 모니터링** - React DevTools 연동
-
-### 🚀 **기능 확장**
-1. **실시간 알림** - WebSocket 연동
-2. **그룹 매칭** - 다중 사용자 매칭
-3. **리뷰 시스템** - 매칭 후 평가
-4. **소셜 기능** - 친구 시스템
-
-## 개발자 정보
-- **프론트엔드**: React + TypeScript 완전 새로운 구현
-- **개발 기간**: 2024년 9월 22일
-- **개발 도구**: Claude + React + Hono Framework
-- **코드 저장소**: GitHub (체계적인 커밋 히스토리)
